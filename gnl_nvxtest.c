@@ -1,6 +1,7 @@
 #include "get_next_line.h"
 #include <fcntl.h>
 #include "libft/libft.h"
+#include <stdio.h>
 
 int	get_next_line(const int fd, char **line)
 {
@@ -17,9 +18,9 @@ int	get_next_line(const int fd, char **line)
 	{
 		if (str)
 			tmp = ft_strdup(str);
+		tmp = ft_memccpy(tmp, buf, '\n', BUFF_SIZE);
 		if (!(ft_strchr(buf, '\n') == NULL)) //si il y a un \n
 		{
-			tmp = ft_memccpy(tmp, buf, '\n', BUFF_SIZE);
 			*line = ft_strdup(tmp);
 			str = ft_strdup(ft_strstr(buf, "\n"));
 			ft_putstr("\nstr =\n");
@@ -27,11 +28,11 @@ int	get_next_line(const int fd, char **line)
 			ft_putstr("\ntest");
 			return (1);
 		}
-		tmp = ft_strjoin(tmp, buf);
+//		tmp = ft_strjoin(tmp, buf);
 		ft_putstr("\nbuf =\n");
 		ft_putstr(buf);
-		ft_putstr("\ntmp =\n");
-		ft_putstr(tmp);
+//		ft_putstr("\ntmp =\n");
+//		ft_putstr(tmp);
 //		free(buf);
 //		free(tmp);
 //		return (1);
