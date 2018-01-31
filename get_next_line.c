@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 #include <fcntl.h>
-#include <stdlib.h>
+#include "libft/libft.h"
 
 int		get_next_line(const int fd, char **line)
 {
@@ -18,6 +18,8 @@ int		get_next_line(const int fd, char **line)
 //		printf("str avant=%s\n", str);
 	buf = ft_strnew(BUFF_SIZE + 1);
 	b = ft_strnew(1);
+	if (!(a = (char **)malloc(sizeof(char *) * 5))) //modifier taille du malloc 
+		return (0);
 	if (str)
 	{
 		ft_putstr("IF STR\n");
@@ -32,7 +34,7 @@ int		get_next_line(const int fd, char **line)
 		a = ft_strsplit(str, '\n');
 		if(a != NULL)
 		{
-			str = ft_strsub(str, 1, ft_strlen(str));
+//			str = ft_strsub(str, 1, ft_strlen(str));
 			b = ft_strjoin(b, a[0]);
 //		ft_putstr("TOTTOTOTOTOOTOT");
 //		ft_putendl(a[0]);
@@ -59,12 +61,12 @@ int		get_next_line(const int fd, char **line)
 	while((i = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		ft_putstr("BOUCLE\n\n");
-	ft_putstr("\n\nbuf=");
+		ft_putstr("\n\nbuf=");
 		ft_putstr(buf);
 		ft_putstr("=buf\n\n");
-		a = ft_strnew(BUFF_SIZE + 1);
+		a[0] = ft_strnew(BUFF_SIZE + 1);
 //The idea is good but not good formulated
-		if (buf[0] =='\n')
+		if (buf[0] == '\n' || buf[BUFF_SIZE - 1] == '\n')
 		{
 			*line = ft_strdup(b);
 			ft_putstr("\nWIN\n");
@@ -109,9 +111,8 @@ int		get_next_line(const int fd, char **line)
 			ft_putstr("=RESULT STRSTR\n");
 			return (1);
 		}
-		
-		
-		
+		if (i == 0 && buf[0] == '\0')
+			return (-1);
 		buf = ft_strnew(BUFF_SIZE + 1);
 		free(str);
 	}
@@ -128,12 +129,12 @@ int		main(int ac, char **av)
 	line = ft_strnew(120);
 	while (get_next_line(fd, &line) == 1)
 	{
+		ft_putstr("\nFIN\n");
 		ft_putstr("\n*line =");
   		ft_putstr(line);
 		ft_putstr("= *line\n\n");
-//		ft_putstr("\nFIN\n");
 //				ft_putendl(line);
-		line = ft_strnew(120);
+		line = ft_strnew(900);
 	}
 	return (0);
 }

@@ -6,9 +6,11 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 18:16:19 by lballiot          #+#    #+#             */
-/*   Updated: 2018/01/15 14:47:57 by karakhirn        ###   ########.fr       */
+/*   Updated: 2018/01/31 10:42:39 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 char	*ft_strstr(char *str, char *to_find)
 {
