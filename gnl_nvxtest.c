@@ -1,7 +1,28 @@
+///////////////////////////////////////////////////////////////////////
+// GNL SEGFAULT AVEC \N DANS STR                                     //
+// GNL SEGFAULT AVEC SAMPLE0 MAIS LIT LE DEBUT                       //
+///////////////////////////////////////////////////////////////////////
+
+
 #include "get_next_line.h"
 #include <fcntl.h>
 #include "libft/libft.h"
 #include <stdio.h>
+
+int	ft_len(char *str)
+{
+	int i;
+	int t;
+
+	i = ft_strlen(str);
+	t = 0;
+	while (str[t] != '\n' && str[t] != '\0')
+	{
+		t++;
+		i--;
+	}
+	return (t);
+}
 
 int	get_next_line(const int fd, char **line)
 {
@@ -39,25 +60,45 @@ int	get_next_line(const int fd, char **line)
 		}
 	while ((i = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		ft_putstr("\nbuf =");
+		ft_putstr("\nbuf avant join =");
 		ft_putstr(buf);
-		ft_putstr("= buf");
-		ft_putstr("\ntmp =");
+		ft_putstr("= buf avant join");
+		ft_putstr("\ntmp avant join =");
 		ft_putstr(tmp);
-		ft_putstr("= tmp");
+		ft_putstr("= tmp avant join\n");
 		if (!(ft_strchr(buf, '\n') == NULL)) //si il y a un \n
 		{
-//COPIER JUSQUAU \N
+			ft_putstr("\nTHERE IS A /N\n");
+//COPIER JUSQUAU 
+			ft_putstr("\ntmp =");
+			ft_putstr(tmp);
+			ft_putstr("= tmp\n");
+			ft_putstr("\nlen : ");
+			ft_putnbr(ft_len(buf));
+			ft_putchar('\n');
+			if (ft_len(buf) > 0)
+				tmp = ft_strjoin(tmp, ft_strsub(buf, 0, ft_len(buf)));
+			ft_putstr("\ntmp strsub=");
+			ft_putstr(tmp);
+			ft_putstr("= tmp strsub");
 			*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
 			str = ft_strdup(ft_strstr(buf, "\n"));
 			ft_putstr("\nSTR =");
 			ft_putstr(str);
 			ft_putstr("= STR");
 			ft_putstr("\ntest");
+			free(tmp);
+			free(buf);
 			return (1);
 		}
-		else
+//		else
 			tmp = ft_strjoin(tmp, buf);
+		ft_putstr("\nbuf =");
+		ft_putstr(buf);
+		ft_putstr("= buf");
+		ft_putstr("\ntmp =");
+		ft_putstr(tmp);
+		ft_putstr("= tmp\n");
 //		free(buf);
 //		free(tmp);
 	}
