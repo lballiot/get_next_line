@@ -9,33 +9,57 @@ int	get_next_line(const int fd, char **line)
 	char *buf;
 	char *tmp;
 	static char *str;
-
+	int counter;
+	
+	counter = 0;
 	i = 0;
 	buf = ft_strnew(1);
 	tmp = ft_strnew(1);
-	str = ft_strnew(1);
+//	str = ft_strnew(1);
+	if (str)
+	{
+		ft_putstr("\nIF STR\n");
+		while (str[counter] == '\n')
+			counter++;
+		tmp = ft_strdup(str + counter);
+//			tmp = ft_strdup(str);
+		ft_putstr("\ntmp =");
+		ft_putstr(tmp);
+		ft_putstr("= tmp");
+		if (!(ft_strchr(tmp, '\n') == NULL)) //si il y a un \n
+		{
+			*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
+			str = ft_strdup(ft_strstr(buf, "\n"));
+			ft_putstr("\nstr =");
+			ft_putstr(str);
+			ft_putstr("= str");
+// FREE TMP
+				return (1);
+			}
+		}
 	while ((i = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		if (str)
-			tmp = ft_strdup(str);
-		tmp = ft_memccpy(tmp, buf, '\n', BUFF_SIZE);
+		ft_putstr("\nbuf =");
+		ft_putstr(buf);
+		ft_putstr("= buf");
+		ft_putstr("\ntmp =");
+		ft_putstr(tmp);
+		ft_putstr("= tmp");
 		if (!(ft_strchr(buf, '\n') == NULL)) //si il y a un \n
 		{
-			*line = ft_strdup(tmp);
+//COPIER JUSQUAU \N
+			*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
 			str = ft_strdup(ft_strstr(buf, "\n"));
-			ft_putstr("\nstr =\n");
+			ft_putstr("\nSTR =");
 			ft_putstr(str);
+			ft_putstr("= STR");
 			ft_putstr("\ntest");
 			return (1);
 		}
-//		tmp = ft_strjoin(tmp, buf);
-		ft_putstr("\nbuf =\n");
-		ft_putstr(buf);
-//		ft_putstr("\ntmp =\n");
-//		ft_putstr(tmp);
+		else
+			tmp = ft_strjoin(tmp, buf);
 //		free(buf);
 //		free(tmp);
-//		return (1);
 	}
 	if (i == 0 && buf[0] == '\0')
 		return (-1);
