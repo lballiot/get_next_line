@@ -68,6 +68,11 @@ int get_next_line(const int fd, char **line)
 	buf = ft_strnew(1);
 	tmp = ft_strnew(1);
 	counter = 0;
+	ft_putstr("fd 3: ");
+	ft_putnbr(fd);
+	ft_putchar('\n');
+	if (fd < 0 || ! fd)
+		return (-1);
 	if (str)
 	{
 //		ft_putstr("\nIF STR");
@@ -83,6 +88,7 @@ int get_next_line(const int fd, char **line)
 //		ft_putstr("= str sans /n");
 		if (!(ft_strchr(str, '\n') == NULL)) //si il y a un \n
 		{
+//			ft_putstr("\nTOTOTOTO\n");
 //			ft_putstr("\nTHERE IS A /N\n");
 //COPIER JUSQUAU
 //			ft_putstr("\ntmp =");
@@ -100,7 +106,6 @@ int get_next_line(const int fd, char **line)
 //			ft_putstr(tmp);
 //			ft_putstr("= tmp strsub");
 			*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
-//IF IL N'Y A PAS DE \N PAS RETOURNER
 			if (ft_strstr(str, "\n") != NULL)
 				str = ft_strdup(ft_strstr(str, "\n"));
 //			ft_putstr("\ntest");
@@ -117,7 +122,7 @@ int get_next_line(const int fd, char **line)
 //		ft_putstr("= tmp");
 		ft_strdel(&str);
 	}
-	while ((i = read(fd, buf, BUFF_SIZE)) > 0)
+	while ((i = read(fd, buf, BUFF_SIZE)) != EOF && i > 0)
 	{
 //		ft_putstr("\nbuf avant join =");
 //		ft_putstr(buf);
@@ -127,6 +132,7 @@ int get_next_line(const int fd, char **line)
 //		ft_putstr("= tmp avant join\n");
 		if (!(ft_strchr(buf, '\n') == NULL)) //si il y a un \n
 		{
+//			ft_putstr("\nTOTOTOTO\n");
 //			ft_putstr("\nTHERE IS A /N IN READ\n");
 //COPIER JUSQUAU
 //			ft_putstr("\ntmp =");
@@ -163,13 +169,83 @@ int get_next_line(const int fd, char **line)
 //		ft_putstr("\ntmp after join =");
 //		ft_putstr(tmp);
 //		ft_putstr("= tmp after join\n");
-//free(buf);
+		ft_strclr(buf);
 //free(tmp);
 	}
-	if (i == 0 && buf[0] == '\0')
+//	ft_putstr("\nbuf end =");
+//	ft_putstr(buf);
+//	ft_putstr("= buf end");
+//	ft_putstr("\ntmp tmp end =");
+//	ft_putstr(tmp);
+//	ft_putstr("= tmp end\n");
+//	ft_putstr("\nline =");
+//	ft_putstr(*line);
+//	ft_putstr("= line");
+	if (i == 0 && tmp[0] == '\0')
+	{
+//		ft_putstr("\n\nICICI\n");
 		return (-1);
+	}
+	if (tmp)
+	{
+//		ft_putstr("\ntmp =");
+//		ft_putstr(tmp);
+//		ft_putstr("= tmp\n");
+		*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
+//		ft_putstr("\nline if =");
+//		ft_putstr(*line);
+//		ft_putstr("= line if");
+		return (1);
+	}
+	free(tmp);
+	free(buf);
+	free(str);
 	return (0);
 }
+
+
+int main(int ac, char **av)
+{
+	char *line;
+	int fd;
+	int ret;
+
+	(void) ac;
+	fd = open(av[1], O_RDONLY);
+	ft_putstr("fd : ");
+	ft_putnbr(fd);
+	ft_putchar('\n');
+	if (fd > 2)
+	{
+		if (close(fd) == 0)
+		{
+			line = NULL;
+			ft_putstr("fd 2: ");
+			ft_putnbr(fd);
+			ft_putchar('\n');
+			ret = get_next_line(fd, &line);
+			if (ret != -1)
+				printf("-> must have returned '-1' when receiving a closed file descriptor\n");
+			else
+				printf("OK\n");
+		}
+		else
+		{
+			printf("An error occured while closing file descriptor associated with file %s\n", av[1]);
+			return (0);
+		}
+	}
+	else
+		printf("An error occured while opening file %s\n", av[1]);
+	return (0);
+}
+
+
+
+/*
+** MY MAIN
+*/
+
 /*
 int main(int ac, char **av)
 {
@@ -177,6 +253,7 @@ int main(int ac, char **av)
 	char *line;
 	int fd;
 
+	(void) ac;
 	fd = open(av[1], O_RDONLY);
 	line = ft_strnew(120);
 	while (get_next_line(fd, &line) == 1)
@@ -187,4 +264,5 @@ int main(int ac, char **av)
 	}
 	return (0);
 }
+
 */
