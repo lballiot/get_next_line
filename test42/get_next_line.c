@@ -59,20 +59,26 @@ int ft_len2(char *str)
 int get_next_line(const int fd, char **line)
 {
 	int i;
+//	char buf[BUFF_SIZE];
 	char *buf;
 	char *tmp;
 	static char *str;
 	int counter;
 
 	i = 0;
-	buf = ft_strnew(1);
+	buf= ft_strnew(BUFF_SIZE);
 	tmp = ft_strnew(1);
 	counter = 0;
-	ft_putstr("fd 3: ");
-	ft_putnbr(fd);
-	ft_putchar('\n');
-	if (fd < 0 || ! fd)
+//	ft_putstr("fd : ");
+//	ft_putnbr(fd);
+//	ft_putchar('\n');
+	if (fd < 0 || line == NULL || BUFF_SIZE < 1)
+	{
+		free(tmp);
+		free(buf);
+		free(str);
 		return (-1);
+	}
 	if (str)
 	{
 //		ft_putstr("\nIF STR");
@@ -105,12 +111,12 @@ int get_next_line(const int fd, char **line)
 //			ft_putstr("\ntmp strsub =");
 //			ft_putstr(tmp);
 //			ft_putstr("= tmp strsub");
-			*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
+			*line = ft_strdup(tmp);
 			if (ft_strstr(str, "\n") != NULL)
 				str = ft_strdup(ft_strstr(str, "\n"));
 //			ft_putstr("\ntest");
-//			free(tmp);
-//			free(buf);
+			free(tmp);
+			free(buf);
 			return (1);
 		}
 //		while (str[counter] == '\n')
@@ -148,7 +154,14 @@ int get_next_line(const int fd, char **line)
 //				ft_putstr(tmp);
 //				ft_putstr("= tmp strsub");
 			}
-			*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
+//			ft_putstr("\ntmp =");
+//			ft_putstr(tmp);
+//			ft_putstr("= tmp\n");
+//			ft_putnbr(ft_strlen(tmp));
+			*line = ft_strdup(tmp);
+//			ft_putstr("\nline =");
+//			ft_putstr(*line);
+//			ft_putstr("= line");
 //			ft_putstr("\nbuf =");
 //			ft_putstr(buf);
 //			ft_putstr("= buf");
@@ -157,8 +170,8 @@ int get_next_line(const int fd, char **line)
 //			ft_putstr("\nstr =");
 //			ft_putstr(str);
 //			ft_putstr("= str");
-//			free(tmp);
-//			free(buf);
+			free(tmp);
+			free(buf);
 			return (1);
 		}
 //else
@@ -181,20 +194,26 @@ int get_next_line(const int fd, char **line)
 //	ft_putstr("\nline =");
 //	ft_putstr(*line);
 //	ft_putstr("= line");
-	if (i == 0 && tmp[0] == '\0')
+	if ((i == 0 && tmp[0] == '\0') || i == -1)
 	{
 //		ft_putstr("\n\nICICI\n");
+		free(tmp);
+		free(buf);
+		free(str);
 		return (-1);
 	}
+//		ft_putstr("toto\n");
 	if (tmp)
 	{
 //		ft_putstr("\ntmp =");
 //		ft_putstr(tmp);
 //		ft_putstr("= tmp\n");
-		*line = ft_memcpy(*line, tmp, ft_strlen(tmp));
+		*line = ft_strdup(tmp);
 //		ft_putstr("\nline if =");
 //		ft_putstr(*line);
 //		ft_putstr("= line if");
+		free(tmp);
+		free(buf);
 		return (1);
 	}
 	free(tmp);
@@ -203,50 +222,46 @@ int get_next_line(const int fd, char **line)
 	return (0);
 }
 
-
-int main(int ac, char **av)
+/*
+** MY MAIN
+*/
+/*
+int main(void)
 {
 	char *line;
 	int fd;
 	int ret;
+	int count_lines;
+	int errors;
 
-	(void) ac;
-	fd = open(av[1], O_RDONLY);
-	ft_putstr("fd : ");
-	ft_putnbr(fd);
-	ft_putchar('\n');
-	if (fd > 2)
+	fd = 0;
+	count_lines = 0;
+	errors = 0;
+	line = NULL;
+	ft_putstr("toto\n");
+	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		if (close(fd) == 0)
-		{
-			line = NULL;
-			ft_putstr("fd 2: ");
-			ft_putnbr(fd);
-			ft_putchar('\n');
-			ret = get_next_line(fd, &line);
-			if (ret != -1)
-				printf("-> must have returned '-1' when receiving a closed file descriptor\n");
-			else
-				printf("OK\n");
-		}
-		else
-		{
-			printf("An error occured while closing file descriptor associated with file %s\n", av[1]);
-			return (0);
-		}
+		if (count_lines == 0 && strcmp(line, "1234567") != 0)
+			errors++;
+		if (count_lines == 1 && strcmp(line, "abcdefg") != 0)
+			errors++;
+		count_lines++;
+		if (count_lines > 50)
+			break ;
 	}
-	else
-		printf("An error occured while opening file %s\n", av[1]);
+	ft_putstr("ret : ");
+	ft_putnbr(ret);
+	ft_putstr("\n");
+	if (count_lines != 2)
+		printf("-> must have returned '1' twice instead of %d time(s)\n", count_lines);
+	if (errors > 0)
+		printf("-> must have read \"1234567\" and \"abcdefg\"\n");
+	if (count_lines == 2 && errors == 0)
+		printf("OK\n");
 	return (0);
 }
-
-
-
-/*
-** MY MAIN
 */
-
-/*
+ /*
 int main(int ac, char **av)
 {
 	int i;
@@ -265,4 +280,4 @@ int main(int ac, char **av)
 	return (0);
 }
 
-*/
+ */
