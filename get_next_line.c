@@ -85,34 +85,33 @@ int get_next_line(const int fd, char **line)
 //		ft_putstr(str);
 //		ft_putstr("= str");
 		if (ft_len2(str) > 0)
-		{
 			str = ft_strdup(ft_strsub(str, ft_len2(str), (ft_strlen(str) - ft_len2(str))));
-		}
 //		ft_putstr("\nstr sans /n =");
 //		ft_putstr(str);
-//		ft_putstr("= str sans /n");
-		if (!(ft_strchr(str, '\n') == NULL)) //si il y a un \n
-		{
+//		ft_putstr("= str sans /n\n");
+        if (ft_strchr(str, '\n')) //si il y a un \n
+        {
 //			ft_putstr("\nTOTOTOTO\n");
 //			ft_putstr("\nTHERE IS A /N\n");
-//COPIER JUSQUAU
+// COPIER JUSQUAU
 //			ft_putstr("\ntmp =");
 //			ft_putstr(tmp);
 //			ft_putstr("= tmp\n");
 //			ft_putstr("\nbuf =");
 //			ft_putstr(buf);
 //			ft_putstr("= buf");
-			if (ft_len(str) > 0)
+            if (ft_len(str) > 0)
 			{
-//				ft_putstr("toto\n");
-				tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
+                tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
 			}
 //			ft_putstr("\ntmp strsub =");
 //			ft_putstr(tmp);
 //			ft_putstr("= tmp strsub");
 			*line = ft_strdup(tmp);
-			if (ft_strstr(str, "\n") != NULL)
+			if (ft_strstr(str, "\n"))
+			{
 				str = ft_strdup(ft_strstr(str, "\n"));
+			}
 //			ft_putstr("\ntest");
 			free(tmp);
 			free(buf);
@@ -135,7 +134,7 @@ int get_next_line(const int fd, char **line)
 //		ft_putstr("\ntmp avant join =");
 //		ft_putstr(tmp);
 //		ft_putstr("= tmp avant join\n");
-		if (!(ft_strchr(buf, '\n') == NULL)) //si il y a un \n
+		if (ft_strchr(buf, '\n')) //si il y a un \n
 		{
 //			ft_putstr("\nTOTOTOTO\n");
 //			ft_putstr("\nTHERE IS A /N IN READ\n");
@@ -164,7 +163,7 @@ int get_next_line(const int fd, char **line)
 //			ft_putstr("\nbuf =");
 //			ft_putstr(buf);
 //			ft_putstr("= buf");
-			if (ft_strstr(buf, "\n") != NULL)
+			if (ft_strstr(buf, "\n"))
 				str = ft_strdup(ft_strstr(buf, "\n"));
 //			ft_putstr("\nstr =");
 //			ft_putstr(str);
@@ -220,97 +219,3 @@ int get_next_line(const int fd, char **line)
 	return (0);
 }
 
-/*
-** MY MAIN
-*/
-/*
-#include <assert.h>
-int main(int ac, char **av)
-{
-	char *line;
-	int out;
-	int p[2];
-	int fd;
-	int gnl_ret;
-
-	out = dup(1);
-	pipe(p);
-
-	fd = 1;
-	dup2(p[1], fd);
-	write(fd, "abc\n\n", 5);
-	close(p[1]);
-	dup2(out, fd);
-*/
-	/* Read abc and new line */
-//	gnl_ret = get_next_line(p[0], &line);
-//	assert(gnl_ret == 1);
-//	assert(strcmp(line, "abc") == 0);
-
-	/* Read new line */
-//	gnl_ret = get_next_line(p[0], &line);
-//	assert(gnl_ret == 1);
-//	assert(line == NULL || *line == '\0');
-
-	/* Read again, but meet EOF */
-//	gnl_ret = get_next_line(p[0], &line);
-//	assert(gnl_ret == 0);
-//	assert(line == NULL || *line == '\0');
-
-	/* Let's do it once again */
-//	gnl_ret = get_next_line(p[0], &line);
-//	assert(gnl_ret == 0);
-//	assert(line == NULL || *line == '\0');
-//	return (0);
-//}
-
-/*	int i;
-	char *line;
-	int fd;
-
-	(void) ac;
-	fd = open(av[1], O_RDONLY);
-	line = ft_strnew(120);
-	while (get_next_line(fd, &line) == 1)
-	{
-//		ft_putstr("\nFIN\n");
-		ft_putendl(line);
-		line = ft_strnew(900);
-	}
-	ft_putnbr(get_next_line(fd, &line));
-	return (0);
-*/
-
-//////////////////
-// PRBLM return //
-//////////////////
-/*
-	char *line;
-	int out;
-	int p[2];
-	int fd;
-	int ret;
-
-	out = dup(1);
-	pipe(p);
-
-	fd = 1;
-	dup2(p[1], fd);
-	write(fd, "abcdefghijklmnop\n", 17);
-	write(fd, "qrstuvwxyzabcdef\n", 17);
-	close(p[1]);
-	dup2(out, fd);
-	get_next_line(p[0], &line);
-	assert(strcmp(line, "abcdefghijklmnop") == 0);
-	get_next_line(p[0], &line);
-	assert(strcmp(line, "qrstuvwxyzabcdef") == 0);
-	ret = get_next_line(p[0], &line);
-	ft_putstr("\nline =");
-	ft_putstr(line);
-	ft_putstr("= line ");
-	ft_putstr("ret :");
-	ft_putnbr(ret);
-	ft_putstr("\n");
-	assert(ret == 0);
-	return (0);
-*/
