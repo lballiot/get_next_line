@@ -43,16 +43,17 @@ int main(void)
 
     // Read new line //
 	gnl_ret = get_next_line(p[0], &line);
-    ft_putstr("\nRead new line \ngnl must = 1\n");
+    ft_putstr("\n\nRead new line \ngnl must = 1\n");
     ft_putstr("gnl_ret : ");
     ft_putnbr(gnl_ret);
     ft_putstr("\n");
+	ft_putstr("ERROR\n");
 //	printf("%s\n", line);
 	assert(gnl_ret == 1); //PROBLEME RETURN
 	assert(line == NULL || *line == '\0');
 
     // Read again, but meet EOF //
-	ft_putstr("\nRead again, but meet EOF \ngnl must = 0\n");
+	ft_putstr("\n\nRead again, but meet EOF \ngnl must = 0\n");
     gnl_ret = get_next_line(p[0], &line);
     ft_putstr("gnl_ret : ");
     ft_putnbr(gnl_ret);
@@ -64,7 +65,7 @@ int main(void)
     assert(line == NULL || *line == '\0');
 
     // Let's do it once again //
-	ft_putstr("\nLet's do it once again\ngnl must = 0\n");
+	ft_putstr("\n\nLet's do it once again\ngnl must = 0\n");
     gnl_ret = get_next_line(p[0], &line);
     ft_putstr("gnl_ret : ");
     ft_putnbr(gnl_ret);
