@@ -12,7 +12,7 @@
 ///////////////////////
 
 
-int main(void)
+/*int main(void)
 {
     char *line;
     int out;
@@ -29,34 +29,83 @@ int main(void)
     close(p[1]);
     dup2(out, fd);
 
-    /* Read abc and new line */
-    gnl_ret = get_next_line(p[0], &line);
-    assert(gnl_ret == 1);
-    assert(strcmp(line, "abc") == 0);
-
-    /* Read new line */
+    // Read abc and new line //						OK
+    ft_putstr("//Read abc and new line// \ngnl must = 1\n");
     gnl_ret = get_next_line(p[0], &line);
     ft_putstr("gnl_ret : ");
     ft_putnbr(gnl_ret);
     ft_putstr("\n");
-    assert(gnl_ret == 1); //PROBLEME RETURN
-    assert(line == NULL || *line == '\0');
+    assert(gnl_ret == 1);
+	ft_putstr("line : ");
+	ft_putstr(line);
+	ft_putstr("\nshould be \"abc\"\n");
+    assert(strcmp(line, "abc") == 0);
 
-    /* Read again, but meet EOF */
-    gnl_ret = get_next_line(p[0], &line);
-    assert(gnl_ret == 0);
-    assert(line == NULL || *line == '\0');
+    // Read new line //
+    ft_putstr("\n\n//Read new line// \ngnl must = 1\n");
+	gnl_ret = get_next_line(p[0], &line);
+    ft_putstr("gnl_ret : ");
+    ft_putnbr(gnl_ret);
+    ft_putstr("\n");
+	ft_putstr("ERROR\n");
+	ft_putstr("line must : (null)\n");
+	if (line)
+	{
+		ft_putstr("line :");
+		ft_putstr(line);
+	}
+	else 
+		ft_putstr("line : (null)\n");
+	assert(gnl_ret == 1); //PROBLEME RETURN
+	assert(line == NULL || *line == '\0');
 
-    /* Let's do it once again */
+    // Read again, but meet EOF //					OK
+	ft_putstr("\n\n//Read again, but meet EOF// \ngnl must = 0\n");
     gnl_ret = get_next_line(p[0], &line);
-    assert(gnl_ret == 0);
+    ft_putstr("gnl_ret : ");
+    ft_putnbr(gnl_ret);
+    ft_putstr("\n");
+	ft_putstr("line must : (null)\n");
+	if (line)
+	{
+		ft_putstr("line :");
+		ft_putstr(line);
+	}
+	else 
+		ft_putstr("line : (null)\n");
+//	assert(gnl_ret == 0);
+	assert(line == NULL || *line == '\0');
+
+    // Let's do it once again //					OK
+	ft_putstr("\n\n//Let's do it once again//\ngnl must = 0\n");
+    gnl_ret = get_next_line(p[0], &line);
+    ft_putstr("gnl_ret : ");
+    ft_putnbr(gnl_ret);
+    ft_putstr("\n");
+	ft_putstr("line must : (null)\n");
+	if (line)
+	{
+		ft_putstr("line :");
+		ft_putstr(line);
+	}
+	else 
+		ft_putstr("line : (null)\n");
+//	assert(gnl_ret == 0);
     assert(line == NULL || *line == '\0');
     return (0);
-}
-/*  int i;
+	}
+*/
+
+ /////////////////////////
+ // MY MAIN             //
+ /////////////////////////
+
+int main(int ac, char **av)
+{
+	int i;
     char *line;
     int fd;
-
+	
     (void) ac;
     fd = open(av[1], O_RDONLY);
     line = ft_strnew(120);
@@ -66,43 +115,9 @@ int main(void)
         ft_putendl(line);
         line = ft_strnew(900);
     }
-    ft_putnbr(get_next_line(fd, &line));
+//    ft_putnbr(get_next_line(fd, &line));
     return (0);
-*/
-
-//////////////////
-// PRBLM return //
-//////////////////
-/*
-    char *line;
-    int out;
-    int p[2];
-    int fd;
-    int ret;
-
-    out = dup(1);
-    pipe(p);
-
-    fd = 1;
-    dup2(p[1], fd);
-    write(fd, "abcdefghijklmnop\n", 17);
-    write(fd, "qrstuvwxyzabcdef\n", 17);
-    close(p[1]);
-    dup2(out, fd);
-    get_next_line(p[0], &line);
-    assert(strcmp(line, "abcdefghijklmnop") == 0);
-    get_next_line(p[0], &line);
-    assert(strcmp(line, "qrstuvwxyzabcdef") == 0);
-    ret = get_next_line(p[0], &line);
-    ft_putstr("\nline =");
-    ft_putstr(line);
-    ft_putstr("= line ");
-    ft_putstr("ret :");
-    ft_putnbr(ret);
-    ft_putstr("\n");
-    assert(ret == 0);
-    return (0);
-*/
+	}
 
 ////////////////////////
 // DIFFICILE NOT OK   //

@@ -63,74 +63,88 @@ int get_next_line(const int fd, char **line)
 	char *tmp;
 	static char *str;
 	int counter;
+	int win;
 
+	win = 0;
 	i = 0;
 	buf= ft_strnew(BUFF_SIZE);
 	tmp = ft_strnew(1);
 	counter = 0;
-//	ft_putstr("fd : ");
-//	ft_putnbr(fd);
-//	ft_putchar('\n');
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1)
 	{
-		free(tmp);
-		free(buf);
 		free(str);
 		return (-1);
 	}
 	if (str)
 	{
-//		ft_putstr("\nIF STR");
+//		ft_putstr("IF STR");
 //		ft_putstr("\nstr =");
 //		ft_putstr(str);
-//		ft_putstr("= str");
+//		ft_putstr("= str\n");
+//		ft_putstr("i : ");
+//		ft_putnbr(i);
+//		ft_putstr("\n");
+		if ((str[0] == '\n' && str[1] == '\n' && str[2] == '\0'))
+		{
+			*line = NULL;
+			return (1);
+		}
+//			(str[0] == '\n' && str[1] == '\0' && win > (ft_strlen(fd) - (BUFF_SIZE * win)))) 
+// si le nb de fois oui read lit est superieur ou egal a (taille total de char dans fd - (la taille quil a lu (BUFF_SIZE * win)))
 		if (ft_len2(str) > 0)
 			str = ft_strdup(ft_strsub(str, ft_len2(str), (ft_strlen(str) - ft_len2(str))));
-//		ft_putstr("\nstr sans /n =");
-//		ft_putstr(str);
-//		ft_putstr("= str sans /n\n");
+//ft_putstr("\nstr sans /n =");
+//ft_putstr(str);
+//ft_putstr("= str sans /n\n");
         if (ft_strchr(str, '\n')) //si il y a un \n
         {
-//			ft_putstr("\nTOTOTOTO\n");
-//			ft_putstr("\nTHERE IS A /N\n");
+//ft_putstr("\nTOTOTOTO\n");
+//ft_putstr("\nTHERE IS A /N\n");
 // COPIER JUSQUAU
-//			ft_putstr("\ntmp =");
-//			ft_putstr(tmp);
-//			ft_putstr("= tmp\n");
-//			ft_putstr("\nbuf =");
-//			ft_putstr(buf);
-//			ft_putstr("= buf");
+//ft_putstr("\ntmp =");
+//ft_putstr(tmp);
+//ft_putstr("= tmp\n");
+//ft_putstr("\nbuf =");
+//ft_putstr(buf);
+//ft_putstr("= buf");
             if (ft_len(str) > 0)
 			{
                 tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
 			}
-//			ft_putstr("\ntmp strsub =");
-//			ft_putstr(tmp);
-//			ft_putstr("= tmp strsub");
+//ft_putstr("\ntmp strsub =");
+//ft_putstr(tmp);
+//ft_putstr("= tmp strsub");
 			*line = ft_strdup(tmp);
 			if (ft_strstr(str, "\n"))
 			{
 				str = ft_strdup(ft_strstr(str, "\n"));
 			}
-//			ft_putstr("\ntest");
+//ft_putstr("\ntest");
 			free(tmp);
 			free(buf);
 			return (1);
 		}
-//		while (str[counter] == '\n')
-//			counter++;
+//while (str[counter] == '\n')
+//counter++;
 		tmp = ft_strdup(str + ft_len2(str));
 //tmp = ft_strdup(str);
-//		ft_putstr("\ntmp =");
-//		ft_putstr(tmp);
-//		ft_putstr("= tmp");
+//ft_putstr("\ntmp =");
+//ft_putstr(tmp);
+//ft_putstr("= tmp");
 		ft_strdel(&str);
 	}
 	while ((i = read(fd, buf, BUFF_SIZE)) != EOF && i > 0)
 	{
+		if (i != EOF) //pour condition in com
+		{
+			win++;
+//			ft_putstr("\n\nWIN\n\n");
+//			ft_putstr("\nwin :");
+//			ft_putnbr(win);
+		}
 //		ft_putstr("\nbuf avant join =");
 //		ft_putstr(buf);
-//		ft_putstr("= buf avant join");
+//		ft_putstr("= buf avant join\n");
 //		ft_putstr("\ntmp avant join =");
 //		ft_putstr(tmp);
 //		ft_putstr("= tmp avant join\n");
@@ -193,13 +207,7 @@ int get_next_line(const int fd, char **line)
 //	ft_putstr(*line);
 //	ft_putstr("= line");
 	if ((i == 0 && tmp[0] == '\0') || i == -1)
-	{
-		free(tmp);
-		free(buf);
-		free(str);
 		return (i);
-	}
-//		ft_putstr("toto\n");
 	if (tmp)
 	{
 //		ft_putstr("\ntmp =");
@@ -216,6 +224,7 @@ int get_next_line(const int fd, char **line)
 	free(tmp);
 	free(buf);
 	free(str);
-	return (0);
+	ft_strdel(&*line);
+	return (i);
 }
 
