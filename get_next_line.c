@@ -6,14 +6,11 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/15 11:55:09 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/15 12:03:56 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include "libft/libft.h"
-#include <stdio.h>
 
 /*
 ** fct qui retourne l'index a partir duquel il y a un \n
@@ -71,8 +68,9 @@ int		get_next_line(const int fd, char **line)
 			return (1);
 		}
 		if (ft_len2(str) > 0)
-			str = ft_strdup(ft_strsub(str, ft_len2(str), (ft_strlen(str) - ft_len2(str))));
-		if (ft_strchr(str, '\n')) 
+			str = ft_strdup(ft_strsub(str, ft_len2(str),
+										(ft_strlen(str) - ft_len2(str))));
+		if (ft_strchr(str, '\n'))
 		{
 			if (ft_len(str) > 0)
 				tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
