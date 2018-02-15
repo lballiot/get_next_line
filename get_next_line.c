@@ -1,8 +1,14 @@
-//////////////////////////////////////////////////////////////////
-// GNL OK                                                       //
-// 3failed test moulitest                                       //
-//////////////////////////////////////////////////////////////////
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
+/*   Updated: 2018/02/15 11:55:09 by lballiot         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
@@ -13,7 +19,7 @@
 ** fct qui retourne l'index a partir duquel il y a un \n
 */
 
-int ft_len(char *str)
+int		ft_len(char *str)
 {
 	int i;
 	int t;
@@ -25,9 +31,6 @@ int ft_len(char *str)
 		t++;
 		i--;
 	}
-//	ft_putstr("\nlen : ");
-//	ft_putnbr(t);
-//	ft_putchar('\n');
 	return (t);
 }
 
@@ -35,7 +38,7 @@ int ft_len(char *str)
 ** fct qui retourne l'index a partir du quel il n'y a plus de \n
 */
 
-int ft_len2(char *str)
+int		ft_len2(char *str)
 {
 	int i;
 
@@ -44,181 +47,65 @@ int ft_len2(char *str)
 	{
 		i++;
 	}
-//	ft_putstr("\nlen : ");
-//	ft_putnbr(i);
-//	ft_putchar('\n');
 	return (i);
 }
 
-//char *ft_str(char *str, char *tmp, char **line, char *buf)
-//{
-//	return (tmp);
-//}
-
-int get_next_line(const int fd, char **line)
+int		get_next_line(const int fd, char **line)
 {
-	int i;
-//	char buf[BUFF_SIZE];
-	char *buf;
-	char *tmp;
-	static char *str;
-	int counter;
-	int win;
+	int			i;
+	char		*buf;
+	char		*tmp;
+	static char	*str;
 
-	win = 0;
 	i = 0;
-	buf= ft_strnew(BUFF_SIZE);
+	buf = ft_strnew(BUFF_SIZE);
 	tmp = ft_strnew(1);
-	counter = 0;
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1)
-	{
-		free(str);
 		return (-1);
-	}
 	if (str)
 	{
-//		ft_putstr("IF STR");
-//		ft_putstr("\nstr =");
-//		ft_putstr(str);
-//		ft_putstr("= str\n");
-//		ft_putstr("i : ");
-//		ft_putnbr(i);
-//		ft_putstr("\n");
 		if ((str[0] == '\n' && str[1] == '\n' && str[2] == '\0'))
 		{
 			*line = NULL;
 			str = ft_strdup(ft_strsub(str, 1, (ft_strlen(str) - 2)));
 			return (1);
 		}
-//			(str[0] == '\n' && str[1] == '\0' && win > (ft_strlen(fd) - (BUFF_SIZE * win))))
-// si le nb de fois oui read lit est superieur ou egal a (taille total de char dans fd - (la taille quil a lu (BUFF_SIZE * win)))
 		if (ft_len2(str) > 0)
 			str = ft_strdup(ft_strsub(str, ft_len2(str), (ft_strlen(str) - ft_len2(str))));
-//ft_putstr("\nstr sans /n =");
-//ft_putstr(str);
-//ft_putstr("= str sans /n\n");
-        if (ft_strchr(str, '\n')) //si il y a un \n
-        {
-//ft_putstr("\nTOTOTOTO\n");
-//ft_putstr("\nTHERE IS A /N\n");
-// COPIER JUSQUAU
-//ft_putstr("\ntmp =");
-//ft_putstr(tmp);
-//ft_putstr("= tmp\n");
-//ft_putstr("\nbuf =");
-//ft_putstr(buf);
-//ft_putstr("= buf");
-            if (ft_len(str) > 0)
-			{
-                tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
-			}
-//ft_putstr("\ntmp strsub =");
-//ft_putstr(tmp);
-//ft_putstr("= tmp strsub");
+		if (ft_strchr(str, '\n')) 
+		{
+			if (ft_len(str) > 0)
+				tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
 			*line = ft_strdup(tmp);
 			if (ft_strstr(str, "\n"))
-			{
 				str = ft_strdup(ft_strstr(str, "\n"));
-			}
-//ft_putstr("\ntest");
-			free(tmp);
-			free(buf);
 			return (1);
 		}
-//while (str[counter] == '\n')
-//counter++;
 		tmp = ft_strdup(str + ft_len2(str));
-//tmp = ft_strdup(str);
-//ft_putstr("\ntmp =");
-//ft_putstr(tmp);
-//ft_putstr("= tmp");
 		ft_strdel(&str);
 	}
 	while ((i = read(fd, buf, BUFF_SIZE)) != EOF && i > 0)
 	{
-//		ft_putstr("\nbuf avant join =");
-//		ft_putstr(buf);
-//		ft_putstr("= buf avant join\n");
-//		ft_putstr("\ntmp avant join =");
-//		ft_putstr(tmp);
-//		ft_putstr("= tmp avant join\n");
-		if (ft_strchr(buf, '\n')) //si il y a un \n
+		if (ft_strchr(buf, '\n'))
 		{
-//			ft_putstr("\nTOTOTOTO\n");
-//			ft_putstr("\nTHERE IS A /N IN READ\n");
-//COPIER JUSQUAU
-//			ft_putstr("\ntmp =");
-//			ft_putstr(tmp);
-//			ft_putstr("= tmp\n");
-//			ft_putstr("\nlen : ");
-//			ft_putnbr(ft_len(buf));
-//			ft_putchar('\n');
 			if (ft_len(buf) > 0)
-			{
 				tmp = ft_strjoin(tmp, ft_strsub(buf, 0, ft_len(buf)));
-//				ft_putstr("\ntmp strsub=");
-//				ft_putstr(tmp);
-//				ft_putstr("= tmp strsub");
-			}
-//			ft_putstr("\ntmp =");
-//			ft_putstr(tmp);
-//			ft_putstr("= tmp\n");
-//			ft_putnbr(ft_strlen(tmp));
 			*line = ft_strdup(tmp);
-//			ft_putstr("\nline =");
-//			ft_putstr(*line);
-//			ft_putstr("= line");
-//			ft_putstr("\nbuf =");
-//			ft_putstr(buf);
-//			ft_putstr("= buf");
 			if (ft_strstr(buf, "\n"))
 				str = ft_strdup(ft_strstr(buf, "\n"));
-//			ft_putstr("\nstr =");
-//			ft_putstr(str);
-//			ft_putstr("= str");
 			free(tmp);
 			free(buf);
 			return (1);
 		}
-//else
 		tmp = ft_strjoin(tmp, buf);
-//		ft_putstr("\nbuf after join =");
-//		ft_putstr(buf);
-//		ft_putstr("= buf after join");
-//		ft_putstr("\ntmp after join =");
-//		ft_putstr(tmp);
-//		ft_putstr("= tmp after join\n");
 		ft_strclr(buf);
-//free(tmp);
 	}
-//	ft_putstr("\nbuf end =");
-//	ft_putstr(buf);
-//	ft_putstr("= buf end");
-//	ft_putstr("\ntmp tmp end =");
-//	ft_putstr(tmp);
-//	ft_putstr("= tmp end\n");
-//	ft_putstr("\nline =");
-//	ft_putstr(*line);
-//	ft_putstr("= line");
 	if ((i == 0 && tmp[0] == '\0') || i == -1)
 		return (i);
 	if (tmp)
 	{
-//		ft_putstr("\ntmp =");
-//		ft_putstr(tmp);
-//		ft_putstr("= tmp\n");
 		*line = ft_strdup(tmp);
-//		ft_putstr("\nline if =");
-//		ft_putstr(*line);
-//		ft_putstr("= line if");
-		free(tmp);
-		free(buf);
 		return (1);
 	}
-	free(tmp);
-	free(buf);
-	free(str);
-	ft_strdel(&*line);
 	return (i);
 }
-
