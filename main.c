@@ -7,95 +7,6 @@
 ** MAIN
 */
 
-///////////////////////
-// 04 problem return //
-///////////////////////
-
-
-/*int main(void)
-{
-    char *line;
-    int out;
-    int p[2];
-    int fd;
-    int gnl_ret;
-
-    out = dup(1);
-    pipe(p);
-
-    fd = 1;
-    dup2(p[1], fd);
-    write(fd, "abc\n\n", 5);
-    close(p[1]);
-    dup2(out, fd);
-
-    // Read abc and new line //						OK
-    ft_putstr("//Read abc and new line// \ngnl must = 1\n");
-    gnl_ret = get_next_line(p[0], &line);
-    ft_putstr("gnl_ret : ");
-    ft_putnbr(gnl_ret);
-    ft_putstr("\n");
-    assert(gnl_ret == 1);
-	ft_putstr("line : ");
-	ft_putstr(line);
-	ft_putstr("\nshould be \"abc\"\n");
-    assert(strcmp(line, "abc") == 0);
-
-    // Read new line //
-    ft_putstr("\n\n//Read new line// \ngnl must = 1\n");
-	gnl_ret = get_next_line(p[0], &line);
-    ft_putstr("gnl_ret : ");
-    ft_putnbr(gnl_ret);
-    ft_putstr("\n");
-	ft_putstr("ERROR\n");
-	ft_putstr("line must : (null)\n");
-	if (line)
-	{
-		ft_putstr("line :");
-		ft_putstr(line);
-	}
-	else 
-		ft_putstr("line : (null)\n");
-	assert(gnl_ret == 1); //PROBLEME RETURN
-	assert(line == NULL || *line == '\0');
-
-    // Read again, but meet EOF //					OK
-	ft_putstr("\n\n//Read again, but meet EOF// \ngnl must = 0\n");
-    gnl_ret = get_next_line(p[0], &line);
-    ft_putstr("gnl_ret : ");
-    ft_putnbr(gnl_ret);
-    ft_putstr("\n");
-	ft_putstr("line must : (null)\n");
-	if (line)
-	{
-		ft_putstr("line :");
-		ft_putstr(line);
-	}
-	else 
-		ft_putstr("line : (null)\n");
-//	assert(gnl_ret == 0);
-	assert(line == NULL || *line == '\0');
-
-    // Let's do it once again //					OK
-	ft_putstr("\n\n//Let's do it once again//\ngnl must = 0\n");
-    gnl_ret = get_next_line(p[0], &line);
-    ft_putstr("gnl_ret : ");
-    ft_putnbr(gnl_ret);
-    ft_putstr("\n");
-	ft_putstr("line must : (null)\n");
-	if (line)
-	{
-		ft_putstr("line :");
-		ft_putstr(line);
-	}
-	else 
-		ft_putstr("line : (null)\n");
-//	assert(gnl_ret == 0);
-    assert(line == NULL || *line == '\0');
-    return (0);
-	}
-*/
-
  /////////////////////////
  // MY MAIN             //
  /////////////////////////
@@ -112,7 +23,8 @@ int main(int ac, char **av)
     while (get_next_line(fd, &line) == 1)
     {
 //      ft_putstr("\nFIN\n");
-        ft_putendl(line);
+		if (line)
+			ft_putendl(line);
         line = ft_strnew(900);
     }
 //    ft_putnbr(get_next_line(fd, &line));
@@ -120,39 +32,118 @@ int main(int ac, char **av)
 	}
 
 ////////////////////////
-// DIFFICILE NOT OK   //
+// multi_fd 30        //
 ////////////////////////
-
 /*
-int main(int ac, char **av)
+int main(void)
 {
-    char *line;
-    int fd;
-    int fd2;
-    int fd3;
-    int diff_file_size;
+	char *line_fd0;
+	int p_fd0[2];
+	int fd0 = 0;
+	int out_fd0 = dup(fd0);
 
-    system("mkdir -p sandbox");
-    system("openssl rand -out sandbox/large_file.txt -base64 $((50 * 1000 * 3/4)) 2> /dev/null");
+	char *line_fd1;
+	int p_fd1[2];
+	int fd1 = 1;
+	int out_fd1 = dup(fd1);
 
-    fd = open("sandbox/large_file.txt", O_RDONLY);
-    fd2 = open("sandbox/large_file.txt.mine", O_CREAT | O_RDWR | O_TRUNC, 0755);
+	char *line_fd2;
+	int p_fd2[2];
+	int fd2 = 2;
+	int out_fd2 = dup(fd2);
 
-    while (get_next_line(fd, &line) == 1)
-    {
-        write(fd2, line, strlen(line));
-        write(fd2, "\n", 1);
-    }
+	char *line_fd3;
+	int p_fd3[2];
+	int fd3 = 3;
+	int out_fd3 = dup(fd3);
 
-    close(fd);
-    close(fd2);
+	pipe(p_fd0);
+	dup2(p_fd0[1], fd0);
+	write(fd0, "aaa\nbbb\n", 8);
+	dup2(out_fd0, fd0);
+	close(p_fd0[1]);
 
-    system("diff sandbox/large_file.txt sandbox/large_file.txt.mine > sandbox/large_file.diff");
-    fd3 = open("sandbox/large_file.diff", O_RDONLY);
-    diff_file_size = read(fd3, NULL, 10);
-    close(fd3);
+	pipe(p_fd1);
+	dup2(p_fd1[1], fd1);
+	write(fd1, "111\n222\n", 8);
+	dup2(out_fd1, fd1);
+	close(p_fd1[1]);
 
-    assert(diff_file_size == 0);
-    return (0);
+	pipe(p_fd2);
+	dup2(p_fd2[1], fd2);
+	write(fd2, "www\nzzz\n", 8);
+	dup2(out_fd2, fd2);
+	close(p_fd2[1]);
+
+	pipe(p_fd3);
+	dup2(p_fd3[1], fd3);
+	write(fd3, "888\n999\n", 8);
+	dup2(out_fd3, fd3);
+	close(p_fd3[1]);
+
+	get_next_line(p_fd0[0], &line_fd0);
+	assert(strcmp(line_fd0, "aaa") == 0);
+
+	get_next_line(p_fd1[0], &line_fd1);
+	assert(strcmp(line_fd1, "111") == 0);
+
+	get_next_line(p_fd2[0], &line_fd2);
+	assert(strcmp(line_fd2, "www") == 0);
+
+	get_next_line(p_fd3[0], &line_fd3);
+	assert(strcmp(line_fd3, "888") == 0);
+
+	get_next_line(p_fd0[0], &line_fd0);
+	assert(strcmp(line_fd0, "bbb") == 0);
+
+	get_next_line(p_fd1[0], &line_fd1);
+	assert(strcmp(line_fd1, "222") == 0);
+
+	get_next_line(p_fd2[0], &line_fd2);
+	assert(strcmp(line_fd2, "zzz") == 0);
+
+	get_next_line(p_fd3[0], &line_fd3);
+	assert(strcmp(line_fd3, "999") == 0);
 }
 */
+ ///////////////////////
+ //42 not OK multi_fd //
+ ///////////////////////
+  /*
+int main(void)
+{
+	char *line;
+	int fd;
+	int fd2;
+	int fd3;
+	int diff_file_size;
+
+    system("mkdir -p sandbox");
+	system("openssl rand -base64 $((30 * 1000 * 3/4)) | tr -d '\n' | tr -d '\r' > sandbox/one_big_fat_line.txt");
+	system("echo '\n' >> sandbox/one_big_fat_line.txt");
+
+	fd = open("sandbox/one_big_fat_line.txt", O_RDONLY);
+	fd2 = open("sandbox/one_big_fat_line.txt.mine", O_CREAT | O_RDWR | O_TRUNC, 0755);
+
+	while (get_next_line(fd, &line) == 1)
+	{
+		ft_putstr("toto\n");
+		if (line)
+		{
+			write(fd2, line, strlen(line));
+			write(fd2, "\n", 1);
+		}
+	}
+	if (line)
+		write(fd2, line, strlen(line));
+	close(fd);
+	close(fd2);
+
+	system("diff sandbox/one_big_fat_line.txt sandbox/one_big_fat_line.txt.mine > sandbox/one_big_fat_line.diff");
+	fd3 = open("sandbox/one_big_fat_line.diff", O_RDONLY);
+	diff_file_size = read(fd3, NULL, 10);
+	close(fd3);
+
+	assert(diff_file_size == 0);
+}
+  */
