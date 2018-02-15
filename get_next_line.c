@@ -87,9 +87,10 @@ int get_next_line(const int fd, char **line)
 		if ((str[0] == '\n' && str[1] == '\n' && str[2] == '\0'))
 		{
 			*line = NULL;
+			str = ft_strdup(ft_strsub(str, 1, (ft_strlen(str) - 2)));
 			return (1);
 		}
-//			(str[0] == '\n' && str[1] == '\0' && win > (ft_strlen(fd) - (BUFF_SIZE * win)))) 
+//			(str[0] == '\n' && str[1] == '\0' && win > (ft_strlen(fd) - (BUFF_SIZE * win))))
 // si le nb de fois oui read lit est superieur ou egal a (taille total de char dans fd - (la taille quil a lu (BUFF_SIZE * win)))
 		if (ft_len2(str) > 0)
 			str = ft_strdup(ft_strsub(str, ft_len2(str), (ft_strlen(str) - ft_len2(str))));
@@ -135,13 +136,6 @@ int get_next_line(const int fd, char **line)
 	}
 	while ((i = read(fd, buf, BUFF_SIZE)) != EOF && i > 0)
 	{
-		if (i != EOF) //pour condition in com
-		{
-			win++;
-//			ft_putstr("\n\nWIN\n\n");
-//			ft_putstr("\nwin :");
-//			ft_putnbr(win);
-		}
 //		ft_putstr("\nbuf avant join =");
 //		ft_putstr(buf);
 //		ft_putstr("= buf avant join\n");
