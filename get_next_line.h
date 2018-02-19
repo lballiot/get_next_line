@@ -6,14 +6,14 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/19 13:26:19 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/19 14:44:06 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 10000
+# define BUFF_SIZE 1000
 # include "libft/libft.h"
 # include <stdio.h>
 
