@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/15 12:03:56 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/19 13:22:02 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int		get_next_line(const int fd, char **line)
 			if (ft_strstr(buf, "\n"))
 				str = ft_strdup(ft_strstr(buf, "\n"));
 			free(tmp);
-			free(buf);
 			return (1);
 		}
 		tmp = ft_strjoin(tmp, buf);
