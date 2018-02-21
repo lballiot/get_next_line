@@ -13,6 +13,8 @@
 NAME = libft.a
 
 SRC = ft_memset.c \
+	  ft_strjoin_and_free.c \
+	  ft_del_new.c \
 	  ft_bzero.c \
 	  ft_memcpy.c \
 	  ft_memccpy.c \

@@ -106,6 +106,8 @@ char			*ft_strsub(char const *s, unsigned int start, size_t len);
 
 char			*ft_strjoin(char const *s1, char const *s2);
 
+char			*ft_strjoin_and_free(char *s1, char *s2);
+
 char			*ft_strtrim(char const *s);
 
 char			**ft_strsplit(char const *s, char c);
@@ -139,6 +141,8 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+
+void			ft_del_new(char **str, int i);
 
 int				ft_long_int(int n);
 
