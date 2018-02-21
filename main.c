@@ -20,11 +20,15 @@ int main(int ac, char **av)
     (void) ac;
     fd = open(av[1], O_RDONLY);
     line = ft_strnew(120);
-    while (get_next_line(fd, &line) == 1)
+    while (( i = get_next_line(fd, &line)) == 1)
     {
-      ft_putstr("\nFIN\n");
+      ft_putstr("line = ");
 		if (line)
 			ft_putendl(line);
+		ft_putstr("i =");
+		ft_putnbr(i);
+		ft_putstr("\n");
+		
         line = ft_strnew(900);
     }
 //    ft_putnbr(get_next_line(fd, &line));

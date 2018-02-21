@@ -6,12 +6,12 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/19 15:58:07 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/19 13:22:02 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+#include <string.h>
 /*
 ** fct qui retourne l'index a partir duquel il y a un \n
 */
@@ -47,125 +47,116 @@ int		ft_len2(char *str)
 	return (i);
 }
 
-static int check(char **line, char *str, char **tmp)
+void ft_del_new(char **str, int i)
 {
-	if ((str[0] == '\n' && str[1] == '\n' && str[2] == '\0'))
-	{
-		*line = NULL;
-		str = ft_strdup(ft_strsub(str, 1, (ft_strlen(str) - 2)));
-		return (1);
-	}
-	if (ft_len2(str) > 0)
-	{
-		str = ft_strdup(ft_strsub(str, ft_len2(str),
-								  (ft_strlen(str) - ft_len2(str))));
-	}
-	if (ft_strchr(str, '\n'))
-	{
-		if (ft_len(str) > 0)
-			*tmp = ft_memmove(*tmp, ft_strsub(str, 0, ft_len(str)), ft_strlen(str));
-		*line = ft_strdup(*tmp);
-		if (ft_strstr(str, "\n"))
-			str = ft_strdup(ft_strstr(str, "\n"));
-		return (1);
-	}
-	*tmp = ft_memmove(*tmp, (str + ft_len2(str)), ft_strlen(*tmp));
-	ft_strdel(&str);
-	return (0);
+	free(*str);
+	
+	*str = ft_strnew(i);
+	
+	
 }
+char            *ft_strjoin_and_free(char *s1, char *s2)
+{
+  size_t  len1;
+  size_t  len2;
+  char    *dest;
+
+  len1 = 0;
+  len2 = 0;
+  dest = NULL;
+  if (s1 && s2)
+    {
+      len1 = ft_strlen(s1);
+      len2 = ft_strlen(s2);
+      dest = ft_memalloc(len1 + len2 + 1);
+      if (dest)
+	{
+	  dest = ft_strcat(dest, s1);
+	  dest = ft_strcat(dest, s2);
+	  free(s1);
+	  ft_strclr(s2);
+	  return (dest);
+	}
+    }
+  free(&dest);
+  return (NULL);
+}
+
 
 int		get_next_line(const int fd, char **line)
 {
-	int			i;
 	char		*buf;
 	char		*tmp;
-	static char	*str;
+	static t_struct	list;
+	char *cpy;
 
-	i = 0;
-	buf = ft_strnew(BUFF_SIZE + 1);
-//	buf = NULL;//
+
+
+//	list.i = 0;
+	buf = ft_strnew(BUFF_SIZE);
 	tmp = ft_strnew(1);
+
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1)
 		return (-1);
-	if (str)
+	if (list.str)
 	{
-		if (check(line, str, &tmp) == 1)
-			return (1);
-	}
-//	tmp = ft_strnew(1);
-/*	if (str)
-	{
-		if ((str[0] == '\n' && str[1] == '\n' && str[2] == '\0'))
+		if ((list.str[0] == '\n' && list.str[1] == '\n' && list.str[2] == '\0'))
 		{
+
 			*line = NULL;
-			str = ft_strdup(ft_strsub(str, 1, (ft_strlen(str) - 2)));
+			list.str = ft_strsub(list.str, 1, (ft_strlen(list.str) - 2));
 			return (1);
 		}
-		if (ft_len2(str) > 0)
-			str = ft_strdup(ft_strsub(str, ft_len2(str),
-										(ft_strlen(str) - ft_len2(str))));
-		if (ft_strchr(str, '\n'))
+		if (ft_len2(list.str) > 0)
+			list.str = ft_strsub(list.str, ft_len2(list.str), (ft_strlen(list.str) - ft_len2(list.str)));
+		if (ft_strchr(list.str, '\n'))
 		{
-			if (ft_len(str) > 0)
-				tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
+			if (ft_len(list.str) > 0)
+				tmp = ft_strsub(list.str, 0, ft_len(list.str));
 			*line = ft_strdup(tmp);
-			if (ft_strstr(str, "\n"))
-				str = ft_strdup(ft_strstr(str, "\n"));
+			if (ft_strstr(list.str, "\n"))
+				list.str = ft_strdup(ft_strstr(list.str, "\n"));
 			return (1);
 		}
-		tcmp = ft_strdup(str + ft_len2(str));
-		ft_strdel(&str);
-		}*/
-//	buf = ft_strnew(BUFF_SIZE + 1);//
-	while ((i = read(fd, buf, BUFF_SIZE)) != EOF && i > 0)
+		tmp = ft_strdup(list.str);
+		ft_strdel(&list.str);
+	}
+
+	while (	(list.i = read(fd, buf, BUFF_SIZE)) != EOF && list.i > 0)
 	{
 		if (ft_strchr(buf, '\n'))
 		{
 			if (ft_len(buf) > 0)
-				tmp = ft_strjoin(tmp, ft_strsub(buf, 0, ft_len(buf)));
+			{
+				cpy = ft_strsub(buf, 0, ft_len(buf));
+				tmp = ft_strjoin_and_free(tmp, cpy);
+				ft_strdel(&cpy);
+			}
+			
 			*line = ft_strdup(tmp);
+			ft_strdel(&tmp);
 			if (ft_strstr(buf, "\n"))
-				str = ft_strdup(ft_strstr(buf, "\n"));
-			free(tmp);
+			{
+				list.str = ft_strdup(ft_strstr(buf, "\n"));
+			}
+			
+				ft_strdel(&buf);
+
 			return (1);
 		}
-		tmp = ft_strjoin(tmp, buf);
-		ft_strclr(buf);
-//		ft_strdel(&buf);
+		cpy = ft_strdup(buf);
+		tmp = ft_strjoin_and_free(tmp, cpy);
+		ft_del_new(&buf, BUFF_SIZE);
+		ft_strdel(&cpy);
+
 	}
-//	ft_strdel(&buf);
-	if ((i == 0 && tmp[0] == '\0') || i == -1)
-		return (i);
+	if ((list.i == 0 && tmp[0] == '\0') || list.i == -1)
+		return (list.i);
+
 	if (tmp)
 	{
 		*line = ft_strdup(tmp);
 		return (1);
 	}
-	return (i);
+	return (list.i);
 }
-
-/*
-	if (str)
-	{
-		if ((str[0] == '\n' && str[1] == '\n' && str[2] == '\0'))
-		{
-			*line = NULL;
-			str = ft_strdup(ft_strsub(str, 1, (ft_strlen(str) - 2)));
-			return (1);
-		}
-		if (ft_len2(str) > 0)
-			str = ft_strdup(ft_strsub(str, ft_len2(str),
-										(ft_strlen(str) - ft_len2(str))));
-		if (ft_strchr(str, '\n'))
-		{
-			if (ft_len(str) > 0)
-				tmp = ft_strdup(ft_strsub(str, 0, ft_len(str)));
-			*line = ft_strdup(tmp);
-			if (ft_strstr(str, "\n"))
-				str = ft_strdup(ft_strstr(str, "\n"));
-			return (1);
-		}
-		tmp = ft_strdup(str + ft_len2(str));
-		ft_strdel(&str);
-	}
-*/
