@@ -6,7 +6,7 @@
 #    By: lballiot <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/09 18:13:52 by lballiot          #+#    #+#              #
-#    Updated: 2017/12/14 10:48:26 by lballiot         ###   ########.fr        #
+#    Updated: 2018/02/22 11:44:41 by lballiot         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,8 @@ SRC = ft_memset.c \
 	  ft_swap.c \
 	  ft_is_negative.c \
 	  ft_strrev.c \
+	  ft_find_last_char.c \
+	  ft_find_first_char.c \
 	  ft_is_spaces.c
 
 OBJ = $(SRC:.c=.o)

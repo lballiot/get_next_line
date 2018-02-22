@@ -1,19 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_del_new.c                                       :+:      :+:    :+:   */
+/*   ft_find_first_char.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/22 11:59:52 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/22 12:00:06 by lballiot         ###   ########.fr       */
+/*   Created: 2018/02/22 11:42:35 by lballiot          #+#    #+#             */
+/*   Updated: 2018/02/22 12:00:50 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_del_new(char **str, int i)
+/*
+** function that return the location of the first char send in params
+*/
+
+int		ft_find_first_char(char *str, char c)
 {
-	free(*str);
-	*str = ft_strnew(i);
+	int i;
+	int t;
+
+	i = ft_strlen(str);
+	t = 0;
+	while (str[t] != c && str[t] != '\0')
+	{
+		t++;
+		i--;
+	}
+	return (t);
 }

@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 10:55:33 by lballiot          #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:31 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/22 11:44:31 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,9 @@ char			*ft_strrev(char *str);
 int				ft_is_negative(int n);
 
 int				ft_is_spaces(char *s);
+
+int				ft_find_last_char(char *str, char c);
+
+int				ft_find_first_char(char *str, char c);
 
 #endif

@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_del_new.c                                       :+:      :+:    :+:   */
+/*   ft_find_last_char.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/22 11:59:52 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/22 12:00:06 by lballiot         ###   ########.fr       */
+/*   Created: 2018/02/22 11:31:35 by lballiot          #+#    #+#             */
+/*   Updated: 2018/02/22 11:59:34 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_del_new(char **str, int i)
+/*
+** function that return the location of the last char find send in params
+*/
+
+int		ft_find_last_char(char *str, char c)
 {
-	free(*str);
-	*str = ft_strnew(i);
+	int i;
+
+	i = 0;
+	while (str[i] == c && str[i] != '\0')
+		i++;
+	return (i);
 }
