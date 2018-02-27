@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/27 18:17:11 by karakhirn        ###   ########.fr       */
+/*   Updated: 2018/02/27 19:29:25 by karakhirn        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int ft_return(char **line, t_struct *list)
 	list->str = ft_strsub(list->str, 1, (ft_strlen(list->str) - 2));
 	return (1);
 }
-
+// trasnform in : void ft_listnew(t_struct new_list, int fd)
 t_struct	*ft_listnew(int fd)
 {
 	t_struct *new;
@@ -139,9 +139,7 @@ int		get_next_line(const int fd, char **line)
 
 	new = ft_listnew(fd);
 	if (check_list(list, fd) == 1)
-	{
 		ft_listadd(&list, new);
-	}
 	if (list)
 	{
 		tmplist = list;
@@ -149,6 +147,7 @@ int		get_next_line(const int fd, char **line)
 		{
 			if (list->next != NULL)
 				list = list->next;
+			// what are you do if list->next is NULL?
 		}
 	}
 	tmp = ft_strnew(1);

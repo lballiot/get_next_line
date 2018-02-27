@@ -153,7 +153,7 @@
 
 int main(int ac, char **av)
 {
-	int fd[ac]; // numero du fd
+	int fd[ac]; // fd's number
 	int i;
 	int ret;
 	char *line;
@@ -161,7 +161,7 @@ int main(int ac, char **av)
 
 	j = 0;
 	i = 0;
-	while (i < ac - 1) //ouvre les differents fichiers
+	while (i < ac - 1) //open the different files
 	{
 		fd[i] = open(av[i + 1], O_RDONLY);
 		i++;
@@ -170,9 +170,9 @@ int main(int ac, char **av)
 	{
 		printf("%d) %s\n", fd[j], line);
 		free(line);
-		j = (j + 1) % i; //pour repartir au debut du tab fd
+		j = (j + 1) % i; //to restart at the beginning of fd tab
 	}
 	printf("ret : %d\n", ret);
-	//while (1);// lecture en boucle
+	//while (1);
 	return (0);
 }
