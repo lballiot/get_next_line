@@ -42,7 +42,7 @@
 // multi_fd 30        //
 ////////////////////////
 
-int main(void)
+/*int main(void)
 {
 	char *line_fd0;
 	int p_fd0[2];
@@ -88,28 +88,91 @@ int main(void)
 	dup2(out_fd3, fd3);
 	close(p_fd3[1]);
 
+	ft_putstr("fd0 = aaa/nbbb\n");
+	ft_putstr("fd1 = 111/n222\n");
+	ft_putstr("fd2 = www/nzzz\n");
+	ft_putstr("fd3 = 888/n999\n");
+
+	ft_putstr("fd 0\n");
 	get_next_line(p_fd0[0], &line_fd0);
+	ft_putstr("line_fd 0 =");
+	ft_putstr(line_fd0);
+	ft_putstr("= line_fd 0\n\n");
 	assert(strcmp(line_fd0, "aaa") == 0);
 
+	ft_putstr("fd 1\n");
 	get_next_line(p_fd1[0], &line_fd1);
+	ft_putstr("line_fd 1 =");
+	ft_putstr(line_fd1);
+	ft_putstr("= line_fd 1\n\n");
 	assert(strcmp(line_fd1, "111") == 0);
 
+	ft_putstr("fd 2\n");
 	get_next_line(p_fd2[0], &line_fd2);
+	ft_putstr("line_fd 2 =");
+	ft_putstr(line_fd2);
+	ft_putstr("= line_fd 2\n\n");
 	assert(strcmp(line_fd2, "www") == 0);
 
+	ft_putstr("fd 3\n");
 	get_next_line(p_fd3[0], &line_fd3);
+	ft_putstr("line_fd 3 =");
+	ft_putstr(line_fd3);
+	ft_putstr("= line_fd 3\n\n");
 	assert(strcmp(line_fd3, "888") == 0);
 
+	ft_putstr("fd 0\n");
 	get_next_line(p_fd0[0], &line_fd0);
+	ft_putstr("line_fd 0 =");
+	ft_putstr(line_fd0);
+	ft_putstr("= line_fd 0\n\n");
 	assert(strcmp(line_fd0, "bbb") == 0);
 
+	ft_putstr("fd 1\n");
 	get_next_line(p_fd1[0], &line_fd1);
+	ft_putstr("line_fd 1 =");
+	ft_putstr(line_fd1);
+	ft_putstr("= line_fd 1\n\n");
 	assert(strcmp(line_fd1, "222") == 0);
 
+	ft_putstr("fd 2\n");
 	get_next_line(p_fd2[0], &line_fd2);
+	ft_putstr("line_fd 2 =");
+	ft_putstr(line_fd2);
+	ft_putstr("= line_fd 2\n\n");
 	assert(strcmp(line_fd2, "zzz") == 0);
 
+	ft_putstr("fd 3\n");
 	get_next_line(p_fd3[0], &line_fd3);
+	ft_putstr("line_fd 3 =");
+	ft_putstr(line_fd3);
+	ft_putstr("= line_fd 3\n\n");
 	assert(strcmp(line_fd3, "999") == 0);
 }
+*/
 
+int main(int ac, char **av)
+{
+	int fd[ac]; // numero du fd
+	int i;
+	int ret;
+	char *line;
+	int j;
+
+	j = 0;
+	i = 0;
+	while (i < ac - 1) //ouvre les differents fichiers
+	{
+		fd[i] = open(av[i + 1], O_RDONLY);
+		i++;
+	}
+	while ((ret = get_next_line(fd[j], &line)) > 0)
+	{
+		printf("%d) %s\n", fd[j], line);
+		free(line);
+		j = (j + 1) % i; //pour repartir au debut du tab fd
+	}
+	printf("ret : %d\n", ret);
+	//while (1);// lecture en boucle
+	return (0);
+}
