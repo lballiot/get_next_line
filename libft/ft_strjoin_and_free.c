@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/22 11:49:21 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/22 11:56:22 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/27 13:56:38 by karakhirn        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ char	*ft_strjoin_and_free(char *s1, char *s2)
 			return (dest);
 		}
 	}
-	free(&dest);
+	free(dest);
 	return (NULL);
 }

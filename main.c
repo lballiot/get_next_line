@@ -1,7 +1,10 @@
 #include "get_next_line.h"
+#include <unistd.h>
 #include <assert.h>
-#include <libc.h>
 #include "libft/libft.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /*
 ** MAIN
@@ -11,7 +14,7 @@
  // MY MAIN             //
  /////////////////////////
 
-int main(int ac, char **av)
+/*int main(int ac, char **av)
 {
 	int i;
     char *line;
@@ -34,11 +37,11 @@ int main(int ac, char **av)
 //    ft_putnbr(get_next_line(fd, &line));
     return (0);
 	}
-
+*/
 ////////////////////////
 // multi_fd 30        //
 ////////////////////////
-/*
+
 int main(void)
 {
 	char *line_fd0;
@@ -109,45 +112,4 @@ int main(void)
 	get_next_line(p_fd3[0], &line_fd3);
 	assert(strcmp(line_fd3, "999") == 0);
 }
-*/
- ///////////////////////
- //42 not OK multi_fd //
- ///////////////////////
-  /*
-int main(void)
-{
-	char *line;
-	int fd;
-	int fd2;
-	int fd3;
-	int diff_file_size;
 
-    system("mkdir -p sandbox");
-	system("openssl rand -base64 $((30 * 1000 * 3/4)) | tr -d '\n' | tr -d '\r' > sandbox/one_big_fat_line.txt");
-	system("echo '\n' >> sandbox/one_big_fat_line.txt");
-
-	fd = open("sandbox/one_big_fat_line.txt", O_RDONLY);
-	fd2 = open("sandbox/one_big_fat_line.txt.mine", O_CREAT | O_RDWR | O_TRUNC, 0755);
-
-	while (get_next_line(fd, &line) == 1)
-	{
-		ft_putstr("toto\n");
-		if (line)
-		{
-			write(fd2, line, strlen(line));
-			write(fd2, "\n", 1);
-		}
-	}
-	if (line)
-		write(fd2, line, strlen(line));
-	close(fd);
-	close(fd2);
-
-	system("diff sandbox/one_big_fat_line.txt sandbox/one_big_fat_line.txt.mine > sandbox/one_big_fat_line.diff");
-	fd3 = open("sandbox/one_big_fat_line.diff", O_RDONLY);
-	diff_file_size = read(fd3, NULL, 10);
-	close(fd3);
-
-	assert(diff_file_size == 0);
-}
-  */

@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/22 12:30:28 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/27 14:57:07 by karakhirn        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static int	ft_check_end(char **line, t_struct *list, char *tmp)
 		return (list->i);
 	if (tmp)
 	{
-		*line = ft_strdup(tmp);
+		*line = ft_strsub(tmp, 0, ft_strlen(tmp));
 		return (1);
 	}
 	return (0);
 }
 
-static int	ft_read(t_struct *list, char *tmp, char **line, const int fd)
-{
+static int	ft_read(t_struct *list, char *tmp, char **line, const int fd){
+
 	char	*buf;
 	char	*cpy;
 
@@ -76,7 +76,7 @@ int			get_next_line(const int fd, char **line)
 	{
 		if ((l.str[0] == '\n' && l.str[1] == '\n' && l.str[2] == '\0'))
 		{
-			*line = NULL;
+			*line = "";
 			l.str = ft_strsub(l.str, 1, (ft_strlen(l.str) - 2));
 			return (1);
 		}
