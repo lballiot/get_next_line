@@ -6,44 +6,12 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/02/27 19:29:25 by karakhirn        ###   ########.fr       */
+/*   Updated: 2018/02/28 11:31:28 by karakhirn        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
-/*
-** fct qui retourne l'index a partir duquel il y a un \n
-*/
-
-int		find_firstN(char *str)
-{
-	int i;
-	int t;
-
-	i = ft_strlen(str);
-	t = 0;
-	while (str[t] != '\n' && str[t] != '\0')
-	{
-		t++;
-		i--;
-	}
-	return (t);
-}
-
-/*
-** fct qui retourne l'index a partir du quel il n'y a plus de \n
-*/
-
-int		find_lastN(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] == '\n' && str[i] != '\0')
-		i++;
-	return (i);
-}
 
 int ft_check_end(char **line, t_struct *list, char *tmp)
 {
@@ -68,9 +36,9 @@ int ft_read(t_struct *list, char *tmp, char **line, const int fd)
 	{
 		if (ft_strchr(buf, '\n'))
 		{
-			if (find_firstN(buf) > 0)
+			if (ft_find_first_char(buf, '\n') > 0)
 			{
-				cpy = ft_strsub(buf, 0, find_firstN(buf));
+				cpy = ft_strsub(buf, 0, ft_find_first_char(buf, '\n'));
 				tmp = ft_strjoin_and_free(tmp, cpy);
 				ft_strdel(&cpy);
 			}
@@ -133,45 +101,47 @@ int check_list(t_struct *list, int check )
 int		get_next_line(const int fd, char **line)
 {
 	char		*tmp;
-	static t_struct	*list;
+	static t_struct	*list_static;
 	t_struct *new;
-	t_struct *tmplist;
+	t_struct *tmp_link;
 
 	new = ft_listnew(fd);
-	if (check_list(list, fd) == 1)
-		ft_listadd(&list, new);
-	if (list)
+	if (check_list(list_static, fd) == 1)
+		ft_listadd(&list_static, new);
+	if (list_static)
 	{
-		tmplist = list;
-		while (list->fd != fd)
+		tmp_link = list_static;
+		while (list_static->fd != fd)
 		{
-			if (list->next != NULL)
-				list = list->next;
-			// what are you do if list->next is NULL?
+			if (list_static->next != NULL)
+				list_static = list_static->next;
+			// what are you do if list_static->next is NULL?
 		}
 	}
 	tmp = ft_strnew(1);
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1)
 		return (-1);
-	if (list->str)
+	if (list_static->str)
 	{
-		if ((list->str[0] == '\n' && list->str[1] == '\n' && list->str[2] == '\0'))
-			return (ft_return(line, list));
-		if (find_lastN(list->str) > 0)
-			list->str = ft_strsub(list->str, find_lastN(list->str),
-								 (ft_strlen(list->str) - find_lastN(list->str)));
-		if (ft_strchr(list->str, '\n'))
+		if ((list_static->str[0] == '\n' && list_static->str[1] == '\n' && list_static->str[2] == '\0'))
+			return (ft_return(line, list_static));
+		if (ft_find_last_char(list_static->str, '\n') > 0)
+			list_static->str = ft_strsub(list_static->str, ft_find_last_char(list_static->str, '\n'),
+								  (ft_strlen(list_static->str) - ft_find_last_char(list_static->str, '\n')));
+		if (ft_strchr(list_static->str, '\n'))
 		{
-			if (find_firstN(list->str) > 0)
-				tmp = ft_strsub(list->str, 0, find_firstN(list->str));
+			if (ft_find_first_char(list_static->str, '\n') > 0)
+				tmp = ft_strsub(list_static->str, 0, ft_find_first_char(list_static->str, '\n'));
 			*line = ft_strdup(tmp);
-			if (ft_strstr(list->str, "\n"))
-				list->str = ft_strdup(ft_strstr(list->str, "\n"));
-			list = tmplist;
+			if (ft_strstr(list_static->str, "\n"))
+				list_static->str = ft_strdup(ft_strstr(list_static->str, "\n"));
+			list_static = tmp_link;
 			return (1);
 		}
-		tmp = ft_strdup(list->str);
-		ft_strdel(&list->str);
+		tmp = ft_strdup(list_static->str);
+		ft_strdel(&list_static->str); // this free is the double free with multifd
 	}
-	return (ft_read(list, tmp, line, fd));
+	return (ft_read(list_static, tmp, line, fd));
 }
+
+// don't forget to free the list_static
