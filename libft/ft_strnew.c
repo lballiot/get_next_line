@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/24 11:06:40 by lballiot          #+#    #+#             */
-/*   Updated: 2017/12/11 13:58:15 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/02/28 15:44:10 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strnew(size_t size)
 		return (NULL);
 	while (size != 0)
 	{
-		str[size - 1] = 0;
+		str[size - 1] = '\0';
 		size--;
 	}
 	return (str);
