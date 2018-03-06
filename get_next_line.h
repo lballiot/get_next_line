@@ -24,6 +24,8 @@ typedef	struct		s_struct
 	char			*str;
 	int				i;
 	int				fd;
+
+	
 	struct s_struct	*next;
 }					t_struct;
 

@@ -42,7 +42,7 @@ int main(int ac, char **av)
 // multi_fd 30        //
 ////////////////////////
 
-int main(void)
+ /*int main(void)
 {
 	char *line_fd0;
 	int p_fd0[2];
@@ -149,8 +149,8 @@ int main(void)
 	ft_putstr("= line_fd 3\n\n");
 	assert(strcmp(line_fd3, "999") == 0);
 }
+ */
 
-/*
 int main(int ac, char **av)
 {
 	int fd[ac]; // fd's number
@@ -166,9 +166,11 @@ int main(int ac, char **av)
 		fd[i] = open(av[i + 1], O_RDONLY);
 		i++;
 	}
+	close(fd[2]);
+	
 	while ((ret = get_next_line(fd[j], &line)) > 0)
 	{
-		printf("%d) %s\n", fd[j], line);
+		printf("\n%d) %s\n", fd[j], line);
 		free(line);
 		j = (j + 1) % i; //to restart at the beginning of fd tab
 	}
@@ -177,7 +179,7 @@ int main(int ac, char **av)
 	return (0);
 }
 
-*/
+
 
 /*
 int main(void)
