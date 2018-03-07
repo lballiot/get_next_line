@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_find_first_char.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2018/02/22 11:42:35 by lballiot          #+#    #+#             */
+/*   Updated: 2018/02/22 12:00:50 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
+/*
+** function that return the location of the first char send in params
+*/
 
-typedef	struct		s_struct
+int		ft_index(char *str, char c)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	int i;
+	int t;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = ft_strlen(str);
+	t = 0;
+	while (str[t] != c && str[t] != '\0')
+	{
+		t++;
+		i--;
+	}
+	return (t);
+}

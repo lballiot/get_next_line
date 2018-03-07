@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2017/11/14 10:22:49 by lballiot          #+#    #+#             */
+/*   Updated: 2017/12/11 13:58:23 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
-
-typedef	struct		s_struct
+char	*ft_strnstr(char *str, char *to_find, int n)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	const char	*cpy;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	cpy = str;
+	if (*to_find == '\0')
+		return ((char *)cpy);
+	while (*cpy && n)
+	{
+		if (ft_memcmp(cpy, to_find, ft_strlen(to_find)) == 0
+				&& (size_t)n >= ft_strlen(to_find))
+			return ((char *)cpy);
+		cpy++;
+		n--;
+	}
+	return (NULL);
+}

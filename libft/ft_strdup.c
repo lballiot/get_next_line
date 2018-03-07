@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2017/11/08 12:57:42 by lballiot          #+#    #+#             */
+/*   Updated: 2018/02/22 11:58:22 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
-
-typedef	struct		s_struct
+char	*ft_strdup(const char *src)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	char	*cpy;
+	int		i;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	if (!(cpy = (char*)malloc(sizeof(char) * (ft_strlen(src) + 1))))
+		return (NULL);
+	while (src[i] != '\0')
+	{
+		cpy[i] = src[i];
+		i++;
+	}
+	cpy[i] = '\0';
+	return (cpy);
+}

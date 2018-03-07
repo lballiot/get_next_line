@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2017/11/24 11:04:40 by lballiot          #+#    #+#             */
+/*   Updated: 2017/12/11 13:56:18 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
-
-typedef	struct		s_struct
+char	*ft_strchr(const char *s, int c)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	int i;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	while (s[i] != (char)c && s[i] != '\0')
+	{
+		i++;
+	}
+	if (s[i] == (char)c)
+		return ((char *)&s[i]);
+	return (0);
+}

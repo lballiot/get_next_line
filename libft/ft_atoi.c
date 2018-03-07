@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2017/11/21 11:04:38 by lballiot          #+#    #+#             */
+/*   Updated: 2017/12/11 13:51:22 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
-
-typedef	struct		s_struct
+int		ft_atoi(const char *str)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	int		i;
+	int		isneg;
+	int		nb;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	nb = 0;
+	isneg = 0;
+	while (((str[i] >= 8) && str[i] <= 13) || str[i] == ' ')
+		i++;
+	if (str[i] == '-')
+		isneg = 1;
+	if ((str[i] == '+') || str[i] == '-')
+		i++;
+	while ((str[i] >= '0' && str[i] <= '9') && str[i])
+	{
+		nb = nb * 10 + (str[i] - '0');
+		i++;
+	}
+	if (isneg == 1)
+		return (-nb);
+	else
+		return (nb);
+}

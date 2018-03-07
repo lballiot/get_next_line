@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_counter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2017/12/09 17:50:18 by lballiot          #+#    #+#             */
+/*   Updated: 2017/12/11 13:52:02 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
-
-typedef	struct		s_struct
+int		ft_counter(char const *s, char ch)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	int	compteur;
+	int	i;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	if (s[i] != ch)
+		compteur = 1;
+	if ((s[i] == ch))
+		compteur = 0;
+	while (s[i])
+	{
+		if (s[i] == ch || i == 0)
+		{
+			while ((s[i] == ch && s[i]))
+				i++;
+			if ((s[i] != ch && s[i] != '\0'))
+				compteur++;
+			while ((s[i] != ch && s[i]))
+				i++;
+			i--;
+		}
+		i++;
+	}
+	return (compteur);
+}

@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Created: 2017/11/30 10:36:28 by lballiot          #+#    #+#             */
+/*   Updated: 2017/12/11 13:54:04 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 320
-# define C '\n'
-# include "libft/libft.h"
-# include <stdio.h>
-
-typedef	struct		s_struct
+void	*ft_memccpy(void *dst, void *src, int c, size_t n)
 {
-	char			*str;
-	int				i;
-	int				fd;
-	char			*tmp;
-	
-	
-	struct s_struct	*next;
-}					t_struct;
+	char		*ret;
+	const char	*srccpy;
+	int			i;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	ret = dst;
+	srccpy = src;
+	if (src || dst)
+	{
+		while (n != 0)
+		{
+			ret[i] = srccpy[i];
+			if (srccpy[i] == (char)c)
+				return (&ret[i + 1]);
+			i++;
+			n--;
+		}
+	}
+	return (NULL);
+}
