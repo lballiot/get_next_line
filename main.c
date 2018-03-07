@@ -171,7 +171,7 @@ int main(int ac, char **av)
 	while ((ret = get_next_line(fd[j], &line)) > 0)
 	{
 		printf("\n%d) %s\n", fd[j], line);
-		free(line);
+		line = ft_strnew(1);
 		j = (j + 1) % i; //to restart at the beginning of fd tab
 	}
 	printf("ret : %d\n", ret);

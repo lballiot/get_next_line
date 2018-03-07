@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 11:22:05 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/01 17:28:03 by lballiot         ###   ########.fr       */
+/*   Created: 2018/03/07 11:11:45 by lballiot          #+#    #+#             */
+/*   Updated: 2018/03/07 11:17:13 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,8 @@
 
 int ft_check_end(char **line, t_struct *list, char *tmp, t_struct *tmp_link)
 {
-//		ft_putstr("titioto");
 	if ((list->i == 0 && tmp[0] == '\0') || list->i == -1)
-	{
 		return (list->i);
-	}
-
 	if (tmp)
 	{
 		*line = ft_strdup(tmp);
@@ -28,21 +24,17 @@ int ft_check_end(char **line, t_struct *list, char *tmp, t_struct *tmp_link)
 		return (1);
 	}
 	list = tmp_link;
-	
-
-	
 	return (0);
 }
 
 
-int ft_read(t_struct **list, char *tmp, char **line, const int fd, t_struct *tmp_link)
+int ft_read(t_struct **list, char *tmp, char **line, t_struct *tmp_link)
 {
 	char *buf;
 	char *cpy;
 
 	buf = ft_strnew(BUFF_SIZE);
-	
-	while (	((*list)->i = read(fd, buf, BUFF_SIZE)) != EOF && (*list)->i > 0)
+	while (((*list)->i = read((*list)->fd, buf, BUFF_SIZE)) != EOF && (*list)->i > 0)
 	{
 		if (ft_strchr(buf, '\n'))
 		{
@@ -61,14 +53,10 @@ int ft_read(t_struct **list, char *tmp, char **line, const int fd, t_struct *tmp
 				(*list) = tmp_link;
 			return (1);
 		}
-
 		tmp = ft_strjoin_and_free(tmp, buf);
-		ft_del_new(&buf, BUFF_SIZE);
 	}
 	return (ft_check_end(line, (*list), tmp, tmp_link));
 }
-
-
 
 int ft_return(char **line, t_struct **list, t_struct *tmp_link)
 {
@@ -95,23 +83,21 @@ int check_number_fd(t_struct **list, int check)
 	*list = tmp;
 	return (-1);
 }
-// problem when list->str doesnt exist anymore for one fd 
+
+// problem when list->str doesnt exist anymore for one fd
 // when its fd 3 but in list->str for the fd 4 is nothing they dont change the link's list
+
 static t_struct *ft_struct(const int fd, t_struct **list_static, t_struct *tmp_link)
 {
 	t_struct *new;
 	t_struct *end;
 
 	end = *list_static;
-
-   
 	if (!(new = (t_struct *)malloc(sizeof(t_struct))))
 		return (NULL);
 	new->fd = fd;
 	new->str = NULL;
 	new->next = NULL;
-//	new->toto = "toto";
-	
 	if (end)
 		while (end->next != NULL)
 			if (end->next != NULL)
@@ -124,29 +110,22 @@ static t_struct *ft_struct(const int fd, t_struct **list_static, t_struct *tmp_l
 			(*list_static)->next = new;
 			*list_static = tmp_link;
 		}
-		else 
+		else
 			*list_static = new;
-
 	}
 	if (*list_static)
-	{
 		while ((*list_static)->fd != fd && (*list_static)->next != NULL)
-		{
 			if ((*list_static)->next != NULL)
 				list_static = &(*list_static)->next;
 // what are you do if list_static->next is NULL?
-		}
-	}
-	else
-		tmp_link = NULL;
 	return (*list_static);
 }
 
 
-int		get_next_line(const int fd, char **line)
+int get_next_line(const int fd, char **line)
 {
-	char		*tmp;
-	static t_struct	*list_static;
+	char*tmp;
+	static t_struct*list_static;
 	t_struct *tmp_link = NULL;
 
 	tmp = ft_strnew(1);
@@ -155,7 +134,7 @@ int		get_next_line(const int fd, char **line)
 
 	if (!list_static)
 		list_static = NULL;
-	tmp_link = list_static;	
+	tmp_link = list_static;
 	list_static = ft_struct(fd, &list_static, tmp_link);
 	if (list_static->str)
 	{
@@ -163,7 +142,7 @@ int		get_next_line(const int fd, char **line)
 			return (ft_return(line, &list_static, tmp_link));
 		if (ft_find_last_char(list_static->str, '\n') > 0)
 			list_static->str = ft_strsub(list_static->str, ft_find_last_char(list_static->str, '\n'),
-								  (ft_strlen(list_static->str) - ft_find_last_char(list_static->str, '\n')));
+										 (ft_strlen(list_static->str) - ft_find_last_char(list_static->str, '\n')));
 		if (ft_strchr(list_static->str, '\n'))
 		{
 			if (ft_find_first_char(list_static->str, '\n') > 0)
@@ -177,7 +156,7 @@ int		get_next_line(const int fd, char **line)
 		tmp = ft_strdup(list_static->str);
 		ft_strdel(&list_static->str); // this free is the double free with multifd
 	}
-	return (ft_read(&list_static, tmp, line, fd, tmp_link));
+	return (ft_read(&list_static, tmp, line, tmp_link));
 }
 
 // don't forget to free the list_static
