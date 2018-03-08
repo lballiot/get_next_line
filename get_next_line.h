@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 10:58:35 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/03/08 12:19:43 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define BUFF_SIZE 320
 # define C '\n'
+# define CH "\n"
 # include "libft/libft.h"
 # include <stdio.h>
 

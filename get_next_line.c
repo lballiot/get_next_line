@@ -6,29 +6,26 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 11:11:45 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/07 11:17:13 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/03/08 12:11:47 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
 
-int ft_check_end(char **line, t_struct *list, char *tmp, t_struct *tmp_link)
+int				ft_check_end(char **line, t_struct *l, char *tmp)
 {
-	if ((list->i == 0 && tmp[0] == '\0') || list->i == -1)
-		return (list->i);
+	if ((l->i == 0 && tmp[0] == '\0') || l->i == -1)
+		return (l->i);
 	if (tmp)
 	{
 		*line = ft_strdup(tmp);
-		list = tmp_link;
 		return (1);
 	}
-	list = tmp_link;
 	return (0);
 }
 
-
-int ft_read(t_struct **l, char *tmp, char **line, t_struct *tmp_link)
+int				ft_read(t_struct **l, char *tmp, char **line, t_struct *tmp_l)
 {
 	char *buf;
 	char *cpy;
@@ -36,29 +33,28 @@ int ft_read(t_struct **l, char *tmp, char **line, t_struct *tmp_link)
 	buf = ft_strnew(BUFF_SIZE);
 	while (((*l)->i = read((*l)->fd, buf, BUFF_SIZE)) != EOF && (*l)->i > 0)
 	{
-		if (ft_strchr(buf, '\n'))
+		if (ft_strchr(buf, C))
 		{
-			if (ft_index(buf, '\n') > 0)
+			if (ft_index(buf, C) > 0)
 			{
-				cpy = ft_strsub(buf, 0, ft_index(buf, '\n'));
+				cpy = ft_strsub(buf, 0, ft_index(buf, C));
 				tmp = ft_strjoin_and_free(tmp, cpy);
 				ft_strdel(&cpy);
 			}
-			*line = ft_strdup(tmp);
+			if (ft_strstr(buf, CH) && (*line = ft_strdup(tmp)))
+				(*l)->str = ft_strdup(ft_strstr(buf, CH));
 			ft_strdel(&tmp);
-			if (ft_strstr(buf, "\n"))
-				(*l)->str = ft_strdup(ft_strstr(buf, "\n"));
 			ft_strdel(&buf);
-			if (tmp_link)
-				(*l) = tmp_link;
+			if (tmp_l)
+				(*l) = tmp_l;
 			return (1);
 		}
 		tmp = ft_strjoin_and_free(tmp, buf);
 	}
-	return (ft_check_end(line, (*l), tmp, tmp_link));
+	return (ft_check_end(line, (*l), tmp));
 }
 
-int ft_return(char **line, t_struct **l, t_struct *tmp_link, int flag)
+int				ft_return(char **line, t_struct **l, t_struct *tmp_l, int flag)
 {
 	char *tmp;
 
@@ -67,27 +63,24 @@ int ft_return(char **line, t_struct **l, t_struct *tmp_link, int flag)
 	{
 		*line = "";
 		(*l)->str = ft_strsub((*l)->str, 1, (ft_strlen((*l)->str) - 2));
-		(*l) = tmp_link;
+		(*l) = tmp_l;
 	}
 	else
 	{
 		if (ft_index((*l)->str, C) > 0)
 			tmp = ft_strsub((*l)->str, 0, ft_index((*l)->str, C));
 		*line = ft_strdup(tmp);
-		if (ft_strstr((*l)->str, "\n"))
-			(*l)->str = ft_strdup(ft_strstr((*l)->str, "\n"));
-		*l = tmp_link;
+		if (ft_strstr((*l)->str, CH))
+			(*l)->str = ft_strdup(ft_strstr((*l)->str, CH));
+		*l = tmp_l;
 	}
-	return (1); 
+	return (1);
 }
 
-
-static t_struct *ft_struct(const int fd, t_struct **list_static)
+static t_struct	*ft_struct(const int fd, t_struct **list_static)
 {
 	t_struct *new;
-	t_struct *end;
 
-	end = *list_static;
 	if (!(new = (t_struct *)malloc(sizeof(t_struct))))
 		return (NULL);
 	new->fd = fd;
@@ -106,13 +99,12 @@ static t_struct *ft_struct(const int fd, t_struct **list_static)
 	return (*list_static);
 }
 
-
-int get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
-	char*tmp;
-	static t_struct*l;
-	t_struct *tmp_link;
-	
+	char			*tmp;
+	static t_struct	*l;
+	t_struct		*tmp_link;
+
 	tmp = ft_strnew(1);
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1)
 		return (-1);
@@ -124,14 +116,11 @@ int get_next_line(const int fd, char **line)
 			return (ft_return(line, &l, tmp_link, 1));
 		if (ft_r_index(l->str, C) > 0)
 			l->str = ft_strsub(l->str, ft_r_index(l->str, C),
-								 (ft_strlen(l->str) - ft_r_index(l->str, C)));
+						(ft_strlen(l->str) - ft_r_index(l->str, C)));
 		if (ft_strchr(l->str, C))
 			return (ft_return(line, &l, tmp_link, 0));
 		tmp = ft_strdup(l->str);
-		ft_strdel(&l->str); // this free is the double free with multifd
+		ft_strdel(&l->str);
 	}
 	return (ft_read(&l, tmp, line, tmp_link));
 }
-
-// don't forget to free the l
-// problem for restart the list
