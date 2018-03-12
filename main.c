@@ -150,7 +150,7 @@ int main(int ac, char **av)
 	assert(strcmp(line_fd3, "999") == 0);
 }
  */
-
+  /*
 int main(int ac, char **av)
 {
 	int fd[ac]; // fd's number
@@ -166,8 +166,6 @@ int main(int ac, char **av)
 		fd[i] = open(av[i + 1], O_RDONLY);
 		i++;
 	}
-	close(fd[2]);
-	
 	while ((ret = get_next_line(fd[j], &line)) > 0)
 	{
 		printf("\n%d) %s\n", fd[j], line);
@@ -180,8 +178,8 @@ int main(int ac, char **av)
 }
 
 
+*/
 
-/*
 int main(void)
 {
 	char *line;
@@ -189,7 +187,7 @@ int main(void)
 	int fd2;
 	int fd3;
 	int diff_file_size;
-    
+
     system("mkdir -p sandbox");
 	system("openssl rand -base64 $((30 * 1000 * 3/4)) | tr -d '\n' | tr -d '\r' > sandbox/one_big_fat_line.txt");
 	system("echo '\n' >> sandbox/one_big_fat_line.txt");
@@ -199,8 +197,12 @@ int main(void)
 
 	while (get_next_line(fd, &line) == 1)
 	{
-		write(fd2, line, strlen(line));
-		write(fd2, "\n", 1);
+		if (line)
+		{
+			write(fd2, line, strlen(line));
+			ft_putstr("main\n");
+			write(fd2, "\n", 1);
+		}
 	}
 	if (line)
 		write(fd2, line, strlen(line));
@@ -214,4 +216,4 @@ int main(void)
 
 	assert(diff_file_size == 0);
 }
-*/
+

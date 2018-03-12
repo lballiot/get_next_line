@@ -6,7 +6,7 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 11:11:45 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/08 12:11:47 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/03/12 16:15:46 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int				ft_check_end(char **line, t_struct *l, char *tmp)
 	return (0);
 }
 
-int				ft_read(t_struct **l, char *tmp, char **line, t_struct *tmp_l)
+int				ft_read(t_struct **l, char **tmp, char **line, t_struct *tmp_l)
 {
 	char *buf;
 	char *cpy;
@@ -38,20 +38,20 @@ int				ft_read(t_struct **l, char *tmp, char **line, t_struct *tmp_l)
 			if (ft_index(buf, C) > 0)
 			{
 				cpy = ft_strsub(buf, 0, ft_index(buf, C));
-				tmp = ft_strjoin_and_free(tmp, cpy);
+				*tmp = ft_strjoin_and_free(*tmp, cpy);
 				ft_strdel(&cpy);
 			}
-			if (ft_strstr(buf, CH) && (*line = ft_strdup(tmp)))
+			if (ft_strstr(buf, CH) && (*line = ft_strdup(*tmp)))
 				(*l)->str = ft_strdup(ft_strstr(buf, CH));
-			ft_strdel(&tmp);
+			ft_strdel(tmp);
 			ft_strdel(&buf);
 			if (tmp_l)
 				(*l) = tmp_l;
 			return (1);
 		}
-		tmp = ft_strjoin_and_free(tmp, buf);
+		*tmp = ft_strjoin_and_free(*tmp, buf);
 	}
-	return (ft_check_end(line, (*l), tmp));
+	return (ft_check_end(line, (*l), *tmp));
 }
 
 int				ft_return(char **line, t_struct **l, t_struct *tmp_l, int flag)
@@ -61,7 +61,7 @@ int				ft_return(char **line, t_struct **l, t_struct *tmp_l, int flag)
 	tmp = ft_strnew(1);
 	if (flag == 1)
 	{
-		*line = "";
+		*line = ft_strsub((*l)->str, 1, (ft_strlen((*l)->str) - 2));
 		(*l)->str = ft_strsub((*l)->str, 1, (ft_strlen((*l)->str) - 2));
 		(*l) = tmp_l;
 	}
@@ -122,5 +122,5 @@ int				get_next_line(const int fd, char **line)
 		tmp = ft_strdup(l->str);
 		ft_strdel(&l->str);
 	}
-	return (ft_read(&l, tmp, line, tmp_link));
+	return (ft_read(&l, &tmp, line, tmp_link));
 }

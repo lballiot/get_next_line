@@ -6,14 +6,14 @@
 /*   By: lballiot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 11:18:43 by lballiot          #+#    #+#             */
-/*   Updated: 2018/03/08 12:19:43 by lballiot         ###   ########.fr       */
+/*   Updated: 2018/03/12 16:15:54 by lballiot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 320
+# define BUFF_SIZE 16
 # define C '\n'
 # define CH "\n"
 # include "libft/libft.h"
@@ -24,9 +24,6 @@ typedef	struct		s_struct
 	char			*str;
 	int				i;
 	int				fd;
-	char			*tmp;
-	
-	
 	struct s_struct	*next;
 }					t_struct;
 
